@@ -1,0 +1,23 @@
+{
+  "name": "timeline-server",
+  "version": "0.1.0",
+  "description": "⏳ Record important moments in your life",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/senhungwong/timeline-server.git"
+  },
+  "author": "Senhung Wong <0x53656e@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/senhungwong/timeline-server/issues"
+  },
+  "homepage": "https://github.com/senhungwong/timeline-server#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}
