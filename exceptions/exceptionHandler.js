@@ -5,3 +5,5 @@ const requestValidationErrorHandler = (err, req, res, next) => {
 module.exports = {
     requestValidationErrorHandler,
 };
+
+// TODO: add more exception handlers for other cases

@@ -1,15 +1,16 @@
 require('dotenv').config();
-const express = require('express');
-const path = require('path');
 
-/* project constants */
-const SERVE_HOST = 3000;
+const app       = require('./bootstrap/app');
+const express   = require('express');
+const appConfig = require('./configs/app');
 
-/* the app */
-const app = express();
+// TODO: add a log system (bole)
 
-/* routes */
-app.use(require('./routes/routes'));
+app.listen(appConfig.express.port, (err) => {
+    if (err) {
+        console.log(err);
+        process.exit(10);
+    }
 
-/* serve */
-app.listen(SERVE_HOST, () => console.log("Server is running on localhost:" + SERVE_HOST));
+    console.log('Server is running on http://localhost:' + appConfig.express.port);
+});
