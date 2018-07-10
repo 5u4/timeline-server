@@ -1,5 +1,10 @@
 const Joi = require('joi');
 
+/**
+ * Login Validator
+ *
+ * @type {{body: {username: *, password: *}}}
+ */
 const login = {
     body: {
         username: Joi.string().required(),
@@ -7,6 +12,11 @@ const login = {
     }
 };
 
+/**
+ * Register Validator
+ *
+ * @type {{body: {username: *, password: *}}}
+ */
 const register = {
     body: {
         username: Joi.string().required(),
