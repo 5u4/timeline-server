@@ -1,13 +1,13 @@
 const Joi = require('joi');
 
-const loginRequest = {
+const login = {
     body: {
         username: Joi.string().required(),
         password: Joi.string().required(),
     }
 };
 
-const registerRequest = {
+const register = {
     body: {
         username: Joi.string().required(),
         password: Joi.string().required(),
@@ -15,6 +15,6 @@ const registerRequest = {
 };
 
 module.exports = {
-    loginRequest,
-    registerRequest,
+    login,
+    register,
 };

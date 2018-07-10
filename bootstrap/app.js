@@ -1,15 +1,15 @@
 const express          = require('express');
 const bodyParser       = require('body-parser');
-const exceptionHandler = require('../exceptions/exceptionHandler');
+const ExceptionHandler = require('../app/Exceptions/Handler');
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/api', require('../routes/routes'));
+app.use('/api', require('../routes/Routes'));
 
-/* validation error handling */
-app.use(exceptionHandler.requestValidationErrorHandler);
+/* error handling */
+app.use(ExceptionHandler.handle);
 
 module.exports = app;

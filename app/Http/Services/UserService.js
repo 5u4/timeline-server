@@ -1,6 +1,6 @@
 const bcrypt     = require('bcrypt');
-const userModel  = require('../models/userModel');
-const authConfig = require('../configs/auth');
+const User       = require('../../Models/User');
+const authConfig = require('../../../configs/auth');
 
 const createUser = (username, password) => {
     return new Promise((resolve, reject) => {
@@ -10,7 +10,7 @@ const createUser = (username, password) => {
                 reject(err);
             }
 
-            const user = new userModel({
+            const user = new User({
                 username: username,
                 password: hashedPassword,
             });

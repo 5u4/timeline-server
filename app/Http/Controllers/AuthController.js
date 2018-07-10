@@ -1,10 +1,10 @@
-const authService = require('../services/authService');
-const userService = require('../services/userService');
+const AuthService = require('../Services/AuthService');
+const UserService = require('../Services/UserService');
 
 const login = (req, res) => {
-    authService.credentialCheck(req.body.username, req.body.password).then((payload) => {
+    AuthService.credentialCheck(req.body.username, req.body.password).then((payload) => {
         if (payload.success) {
-            authService.getAuthToken(payload.user).then((token) => {
+            AuthService.getAuthToken(payload.user).then((token) => {
                 res.json({
                     success: true,
                     token: token,
@@ -19,8 +19,8 @@ const login = (req, res) => {
 };
 
 const register = (req, res) => {
-    userService.createUser(req.body.username, req.body.password).then((user) => {
-        authService.getAuthToken(user).then((token) => {
+    UserService.createUser(req.body.username, req.body.password).then((user) => {
+        AuthService.getAuthToken(user).then((token) => {
             res.json({
                 user: user,
                 token: token,

@@ -1,11 +1,11 @@
 const jwt       = require('jsonwebtoken');
 const bcrypt    = require('bcrypt');
-const jwtConfig = require('../configs/jwt');
-const userModel = require('../models/userModel');
+const jwtConfig = require('../../../configs/jwt');
+const User      = require('../../Models/User');
 
 const credentialCheck = (username, password) => {
     return new Promise((resolve, reject) => {
-        userModel.findOne({
+        User.findOne({
             username: username,
         }, (err, user) => {
             if (err) {
@@ -13,14 +13,14 @@ const credentialCheck = (username, password) => {
                 reject(err);
             }
 
-            bcrypt.compare(password, user.password, (err, success) => {
+            bcrypt.compare(password, user.password, (err, isEqual) => {
                 if (err) {
                     // TODO: wrong password handling
                     reject(err);
                 }
 
                 resolve({
-                    success: success,
+                    success: isEqual,
                     user: user,
                 });
             });
@@ -31,7 +31,7 @@ const credentialCheck = (username, password) => {
 const getAuthToken = (user) => {
     return new Promise((resolve, reject) => {
         jwt.sign(user.toJSON(), jwtConfig.jwtsecret, {
-            expiresIn: 60 * 60 * 24,
+            expiresIn: jwtConfig.expiresIn,
         }, (err, token) => {
             if (err) {
                 // TODO: jwt auth token sign error handle
