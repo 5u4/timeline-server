@@ -1,4 +1,6 @@
+const jwt       = require('jsonwebtoken');
 const bcrypt    = require('bcrypt');
+const jwtConfig = require('../configs/jwt');
 const userModel = require('../models/userModel');
 
 const credentialCheck = (username, password) => {
@@ -11,18 +13,37 @@ const credentialCheck = (username, password) => {
                 reject(err);
             }
 
-            bcrypt.compare(password, user.password, (err, result) => {
+            bcrypt.compare(password, user.password, (err, success) => {
                 if (err) {
                     // TODO: wrong password handling
                     reject(err);
                 }
 
-                resolve(result);
+                resolve({
+                    success: success,
+                    user: user,
+                });
             });
         });
     });
 };
 
+const getAuthToken = (user) => {
+    return new Promise((resolve, reject) => {
+        jwt.sign(user.toJSON(), jwtConfig.jwtsecret, {
+            expiresIn: 60 * 60 * 24,
+        }, (err, token) => {
+            if (err) {
+                // TODO: jwt auth token sign error handle
+                reject(err);
+            }
+
+            resolve(token);
+        });
+    });
+};
+
 module.exports = {
-    credentialCheck
+    credentialCheck,
+    getAuthToken,
 };
