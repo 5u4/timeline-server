@@ -7,8 +7,14 @@ const Joi = require('joi');
  */
 const login = {
     body: {
-        username: Joi.string().required(),
-        password: Joi.string().required(),
+        username: Joi.string()
+            .min(5).max(20)
+            .regex(/^[a-zA-Z][a-zA-Z0-9]*$/)
+            .required(),
+
+        password: Joi.string()
+            .min(8).max(64)
+            .required(),
     }
 };
 
@@ -19,8 +25,14 @@ const login = {
  */
 const register = {
     body: {
-        username: Joi.string().required(),
-        password: Joi.string().required(),
+        username: Joi.string()
+            .min(5).max(20)
+            .regex(/^[a-zA-Z][a-zA-Z0-9]*$/)
+            .required(),
+
+        password: Joi.string()
+            .min(8).max(64)
+            .required(),
     }
 };
 
