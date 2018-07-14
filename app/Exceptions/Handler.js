@@ -7,7 +7,7 @@
  * @param next
  */
 const handle = (err, req, res, next) => {
-    res.status(400).json(err);
+    res.status(err.status || 500).json(err);
 };
 
 module.exports = {
