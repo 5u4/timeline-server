@@ -5,8 +5,18 @@ const mongoose = require('../../database/connection');
  * @property password {String}
  */
 const User = new mongoose.Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        required: true,
+        min: 5,
+        max: 20,
+        regex: /^[a-zA-Z][a-zA-Z0-9]*$/,
+    },
+
+    password: {
+        type: String,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('user', User);
