@@ -10,18 +10,33 @@ const UserService = require('../Services/UserService');
  * @param req.body.username {String} the unique username | required
  * @param req.body.password {String} the password without been hashed | required
  *
- * @example success response: {
- *     success: {Boolean} if login success,
- *     token  : {String}  the json web token,
- * }
+ * @example success response:
+ *     code: 200 OK
  *
- * @example error response: {
- *     success: {Boolean} if login success,
- *     errors : {String}  the error occurred during login,
- * }
+ *     {
+ *         success: {Boolean} if login success,
+ *         token  : {String}  the json web token,
+ *     }
+ *
+ * @example error response:
+ *     code: 400 BAD REQUEST
+ *
+ *     {
+ *         success: {Boolean} if login success,
+ *         errors : {String}  the error occurred during login,
+ *     }
  */
 const login = (req, res) => {
     AuthService.credentialCheck(req.body.username, req.body.password).then((payload) => {
+        if (!payload.success) {
+            res.status(400).json({
+                success: false,
+                errors: 'Username/email not match',
+            });
+
+            return;
+        }
+
         AuthService.getAuthToken(payload.user).then((token) => {
             res.json({
                 success: true,
@@ -29,7 +44,7 @@ const login = (req, res) => {
             })
         });
     }, (err) => {
-        res.json({success: false, errors: err});
+        res.status(400).json({success: false, errors: err});
     });
 };
 
@@ -42,14 +57,20 @@ const login = (req, res) => {
  * @param req.body.username {String} the unique username | required
  * @param req.body.password {String} the password without been hashed | required
  *
- * @example success response: {
- *     user : {Object} the newly created user,
- *     token: {String} the json web token,
- * }
+ * @example success response:
+ *     code: 200 OK
  *
- * @example error response: {
- *     errors: {String} the error occurred during register,
- * }
+ *     {
+ *         user : {Object} the newly created user,
+ *         token: {String} the json web token,
+ *     }
+ *
+ * @example error response:
+ *     code: 400 BAD REQUEST
+ *
+ *     {
+ *         errors: {String} the error occurred during register,
+ *     }
  */
 const register = (req, res) => {
     UserService.createUser(req.body.username, req.body.password).then((user) => {
@@ -60,7 +81,7 @@ const register = (req, res) => {
             });
         });
     }, (err) => {
-        res.json({errors: err});
+        res.status(400).json({errors: err});
     });
 };
 
