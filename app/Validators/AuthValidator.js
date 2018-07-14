@@ -19,6 +19,20 @@ const login = {
 };
 
 /**
+ * Username uniqueness check validator
+ *
+ * @type {{body: {username: *}}}
+ */
+const usernameUniquenessCheck = {
+    body: {
+        username: Joi.string()
+            .min(5).max(20)
+            .regex(/^[a-zA-Z][a-zA-Z0-9]*$/)
+            .required(),
+    }
+};
+
+/**
  * Register Validator
  *
  * @type {{body: {username: *, password: *}}}
@@ -38,5 +52,6 @@ const register = {
 
 module.exports = {
     login,
+    usernameUniquenessCheck,
     register,
 };
