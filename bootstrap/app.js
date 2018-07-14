@@ -1,6 +1,6 @@
-const express          = require('express');
-const bodyParser       = require('body-parser');
-const ExceptionHandler = require('../app/Exceptions/Handler');
+const express                     = require('express');
+const bodyParser                  = require('body-parser');
+const generalHttpExceptionHandler = require('../app/Exceptions/GeneralHttpExceptionHandler');
 
 /* create app */
 const app = express();
@@ -13,6 +13,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/api', require('../routes/Routes'));
 
 /* handle exceptions */
-app.use(ExceptionHandler.handle);
+app.use(generalHttpExceptionHandler);
 
 module.exports = app;

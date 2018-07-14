@@ -1,3 +1,5 @@
+const BadRequestHttpExceptionHandler = require('../../Exceptions/BadRequestHttpExceptionHandler');
+
 const AuthService = require('../Services/AuthService');
 const UserService = require('../Services/UserService');
 
@@ -14,26 +16,13 @@ const UserService = require('../Services/UserService');
  *     code: 200 OK
  *
  *     {
- *         success: {Boolean} if login success,
- *         token  : {String}  the json web token,
- *     }
- *
- * @example error response:
- *     code: 400 BAD REQUEST
- *
- *     {
- *         success: {Boolean} if login success,
- *         errors : {String}  the error occurred during login,
+ *         token: {String} the json web token,
  *     }
  */
-const login = (req, res) => {
+const login = (req, res, next) => {
     AuthService.credentialCheck(req.body.username, req.body.password).then((payload) => {
         if (!payload.success) {
-            res.status(400).json({
-                success: false,
-                errors: 'Username/email not match',
-            });
-
+            next(new BadRequestHttpExceptionHandler(res, ['Username and password not match']));
             return;
         }
 
@@ -44,7 +33,7 @@ const login = (req, res) => {
             })
         });
     }, (err) => {
-        res.status(400).json({success: false, errors: err});
+        next(new BadRequestHttpExceptionHandler(res, err));
     });
 };
 
@@ -64,13 +53,6 @@ const login = (req, res) => {
  *         user : {Object} the newly created user,
  *         token: {String} the json web token,
  *     }
- *
- * @example error response:
- *     code: 400 BAD REQUEST
- *
- *     {
- *         errors: {String} the error occurred during register,
- *     }
  */
 const register = (req, res) => {
     UserService.createUser(req.body.username, req.body.password).then((user) => {
@@ -81,7 +63,7 @@ const register = (req, res) => {
             });
         });
     }, (err) => {
-        res.status(400).json({errors: err});
+        next(new BadRequestHttpExceptionHandler(res, err));
     });
 };
 
