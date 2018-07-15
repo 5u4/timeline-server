@@ -72,7 +72,7 @@ const checkUsernameUniqueness = (req, res) => {
  * @param req.body.password {String} the password without been hashed | required
  *
  * @example success response:
- *     status: 200 OK
+ *     status: 201 CREATED
  *
  *     {
  *         user : {Object} the newly created user,
@@ -88,7 +88,7 @@ const register = (req, res, next) => {
 
         UserService.createUser(req.body.username, req.body.password).then((user) => {
             AuthService.getAuthToken(user).then((token) => {
-                res.json({
+                res.status(201).json({
                     user: user,
                     token: token,
                 });
