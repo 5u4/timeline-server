@@ -3,6 +3,8 @@ const BadRequestHttpExceptionHandler = require('../../Exceptions/BadRequestHttpE
 const AuthService = require('../Services/AuthService');
 const UserService = require('../Services/UserService');
 
+const UserTransformer = require('../Transformers/UserTransformer');
+
 /**
  * login a user
  *
@@ -89,7 +91,7 @@ const register = (req, res, next) => {
         UserService.createUser(req.body.username, req.body.password).then((user) => {
             AuthService.getAuthToken(user).then((token) => {
                 res.status(201).json({
-                    user: user,
+                    user: UserTransformer.make(user),
                     token: token,
                 });
             });
