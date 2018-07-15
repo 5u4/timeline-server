@@ -14,7 +14,13 @@ const generalHttpExceptionHandler = (err, req, res, next) => {
         return;
     }
 
-    const exception = new HttpExceptionHandler(res, 500, err);
+    let statusCode = 500;
+
+    if (err.status) {
+        statusCode = err.status;
+    }
+
+    const exception = new HttpExceptionHandler(res, statusCode, err);
 
     exception.handle();
 };
