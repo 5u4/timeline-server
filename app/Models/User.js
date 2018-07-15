@@ -10,7 +10,7 @@ const User = new mongoose.Schema({
         required: true,
         min: 5,
         max: 20,
-        regex: /^[a-zA-Z][a-zA-Z0-9]*$/,
+        regex: /^[a-zA-Z][a-zA-Z0-9_.]*$/,
     },
 
     password: {
