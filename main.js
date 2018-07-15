@@ -1,16 +1,11 @@
 require('dotenv').config();
 
-const app       = require('./bootstrap/app');
-const express   = require('express');
-const appConfig = require('./configs/app');
+const isTestingEnv = process.env.NODE_ENV === 'test';
 
-// TODO: add a log system (bole)
+const app = require('./bootstrap/app');
 
-app.listen(appConfig.express.port, (err) => {
-    if (err) {
-        console.log(err);
-        process.exit(10);
-    }
+const port = isTestingEnv
+    ? require('./configs/app').testing.port
+    : require('./configs/app').express.port;
 
-    console.log('Server is running on http://localhost:' + appConfig.express.port);
-});
+module.exports = app.listen(port);
