@@ -20,4 +20,7 @@ app.use('/api', require('../routes/Routes'));
 /* handle exceptions */
 app.use(generalHttpExceptionHandler);
 
+/* connect to database */
+require('../database/connection');
+
 module.exports = app;
