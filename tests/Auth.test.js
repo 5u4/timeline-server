@@ -121,6 +121,65 @@ describe('AuthController tests', () => {
         });
     });
 
+    describe('Test username/password validator', () => {
+        it('should reject since username is longer than 20', done => {
+            chai.request(server)
+                .post('/api/v1/auth/uniqueness/username')
+                .send({
+                    username: 'test_user_name_has_longer_than_twenty_chars',
+                })
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('messages');
+                    res.body.messages.should.be.an('object');
+                    done();
+                });
+        });
+
+        it('should reject since username is shorter than 5', done => {
+            chai.request(server)
+                .post('/api/v1/auth/uniqueness/username')
+                .send({
+                    username: 'test',
+                })
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('messages');
+                    res.body.messages.should.be.an('object');
+                    done();
+                });
+        });
+
+        it('should reject since username contains invalid chars', done => {
+            chai.request(server)
+                .post('/api/v1/auth/uniqueness/username')
+                .send({
+                    username: 'user-name',
+                })
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('messages');
+                    res.body.messages.should.be.an('object');
+                    done();
+                });
+        });
+
+        it('should reject since password is shorter than 8', done => {
+            chai.request(server)
+                .post('/api/v1/auth/register')
+                .send({
+                    username: 'test_username',
+                    password: 'pass',
+                })
+                .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.have.property('messages');
+                    res.body.messages.should.be.an('object');
+                    done();
+                });
+        });
+    });
+
     after(done => {
         bootstrap.removeAllDBRecords();
         bootstrap.disconnect(server);
