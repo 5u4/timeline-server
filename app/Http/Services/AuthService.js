@@ -57,7 +57,7 @@ const credentialCheck = (username, password) => {
  */
 const getAuthToken = (user) => {
     return new Promise((resolve, reject) => {
-        jwt.sign(user.toJSON(), jwtConfig.jwtsecret, {
+        jwt.sign({id: user._id}, jwtConfig.jwtsecret, {
             expiresIn: jwtConfig.expiresIn,
         }, (err, token) => {
             if (err) {

@@ -1,7 +1,9 @@
-const jwt = require('jsonwebtoken');
+const jwt       = require('jsonwebtoken');
 const jwtConfig = require('../../../configs/jwt');
+const User      = require('../../Models/User');
 
 const UnauthorizedHttpExceptionHandler = require('../../Exceptions/UnauthorizedHttpExceptionHandler');
+const NotFoundHttpExceptionHandler     = require('../../Exceptions/NotFoundHttpExceptionHandler');
 
 /**
  * Check if a jwt is been provided with the request
@@ -20,13 +22,20 @@ module.exports = (req, res, next) => {
         return;
     }
 
-    jwt.verify(token, jwtConfig.jwtsecret, (err, decoded) => {
+    jwt.verify(token, jwtConfig.jwtsecret, (err, user) => {
         if (err) {
             next(new UnauthorizedHttpExceptionHandler(res, ['Invalid token']));
             return;
         }
 
-        req.user = decoded;
-        next();
+        User.findById(user.id, (err, user) => {
+            if (err) {
+                next(new NotFoundHttpExceptionHandler(res, ['User not found']));
+                return;
+            }
+
+            req.user = user;
+            next();
+        });
     });
 };
