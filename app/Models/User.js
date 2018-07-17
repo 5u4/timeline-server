@@ -17,6 +17,12 @@ const User = new mongoose.Schema({
         type: String,
         required: true,
     },
+
+    events: {
+        type: Array,
+        default: [],
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('user', User);

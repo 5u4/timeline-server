@@ -16,7 +16,7 @@ const UserTransformer = require('../Transformers/UserTransformer');
  * @param req.body.password {String} the password without been hashed | required
  *
  * @example success response:
- *     status: 200 OK
+ *     status: 201 CREATED
  *
  *     {
  *         token: {String} the json web token,
