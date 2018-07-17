@@ -24,13 +24,11 @@ const credentialCheck = (username, password) => {
             username: username,
         }, (err, user) => {
             if (err) {
-                // TODO: get user error handling
                 reject(err);
             }
 
             bcrypt.compare(password, user.password, (err, isEqual) => {
                 if (err) {
-                    // TODO: wrong password handling
                     reject(err);
                 }
 
@@ -61,7 +59,6 @@ const getAuthToken = (user) => {
             expiresIn: jwtConfig.expiresIn,
         }, (err, token) => {
             if (err) {
-                // TODO: jwt auth token sign error handle
                 reject(err);
             }
 

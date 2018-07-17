@@ -37,7 +37,6 @@ const createUser = (username, password) => {
     return new Promise((resolve, reject) => {
         bcrypt.hash(password, authConfig.saltRounds, (err, hashedPassword) => {
             if (err) {
-                // TODO: password hash error handling
                 reject(err);
             }
 
@@ -48,7 +47,6 @@ const createUser = (username, password) => {
 
             user.save((err) => {
                 if (err) {
-                    // TODO: store db error handling
                     reject(err);
                 }
             });
