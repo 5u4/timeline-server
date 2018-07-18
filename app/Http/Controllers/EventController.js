@@ -59,7 +59,7 @@ const index = (req, res, next) => {
  *     }
  */
 const store = (req, res, next) => {
-    EventService.createUserEvent(req.body.title, req.body.description, req.body.postedAt).then(event => {
+    EventService.createUserEvent(req.user, req.body.title, req.body.description, req.body.postedAt).then(event => {
         res.status(201).json(EventTransformer.make(event));
     }, err => {
         next(new BadRequestHttpExceptionHandler(res, ['Unable to create event']));

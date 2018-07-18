@@ -1,4 +1,5 @@
 const Event = require('../../Models/Event');
+const User  = require('../../Models/User');
 
 /**
  * Get a user event by the event id
@@ -51,6 +52,7 @@ const getAllUserEvents = (user) => {
 /**
  * Create an user event
  *
+ * @param currentUser {User}   The current user
  * @param title       {String} The title of the event
  * @param description {String} The description of the event
  * @param postedAt    {Number} The event date timestamp
@@ -61,7 +63,7 @@ const getAllUserEvents = (user) => {
  *
  * @example reject {String} The error
  */
-const createUserEvent = (title, description = null, postedAt = null) => {
+const createUserEvent = (currentUser, title, description = null, postedAt = null) => {
     return new Promise((resolve, reject) => {
         const event = new Event({
             title: title,
@@ -70,6 +72,17 @@ const createUserEvent = (title, description = null, postedAt = null) => {
         });
 
         event.save(err => {
+            if (err) {
+                console.log(err);
+                reject(err);
+            }
+        });
+
+        User.update({
+            _id: currentUser._id,
+        }, {
+            $push: {events: event._id},
+        }, err => {
             if (err) {
                 reject(err);
             }

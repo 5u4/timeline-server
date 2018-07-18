@@ -25,13 +25,13 @@ const Event = new mongoose.Schema({
     postedAt: {
         type: Number,
         default: new Date(),
-        required: true,
+        required: false,
     },
 
     createdAt: {
         type: Number,
         default: new Date(),
-        required: true,
+        required: false,
     },
 
     updatedAt: {
