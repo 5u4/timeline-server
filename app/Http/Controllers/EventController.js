@@ -2,6 +2,8 @@ const BadRequestHttpExceptionHandler = require('../../Exceptions/BadRequestHttpE
 
 const EventService = require('../Services/EventService');
 
+const EventTransformer = require('../Transformers/EventTransformer');
+
 /**
  * List all user events
  *
@@ -20,11 +22,13 @@ const EventService = require('../Services/EventService');
  *         title:       {String},
  *         description: {String},
  *         postedAt:    {Number},
+ *         createdAt:   {Number},
+ *         updatedAt:   {Number},
  *     },]
  */
 const index = (req, res, next) => {
     EventService.getAllUserEvents(req.user).then(events => {
-        res.json(events);
+        res.json(EventTransformer.collection(events));
     }, err => {
         next(new BadRequestHttpExceptionHandler(res, ['Unable to get user events']));
     });
@@ -46,18 +50,18 @@ const index = (req, res, next) => {
  *     status: 201 CREATED
  *
  *     {
- *         id: {String},
- *         title: {String},
+ *         id:          {String},
+ *         title:       {String},
  *         description: {String},
- *         postedAt: {Number},
+ *         postedAt:    {Number},
+ *         createdAt:   {Number},
+ *         updatedAt:   {Number},
  *     }
  */
 const store = (req, res, next) => {
     EventService.createUserEvent(req.body.title, req.body.description, req.body.postedAt).then(event => {
-        console.log(event);
-        res.status(201).json(event);
+        res.status(201).json(EventTransformer.make(event));
     }, err => {
-        console.log(err);
         next(new BadRequestHttpExceptionHandler(res, ['Unable to create event']));
     });
 };

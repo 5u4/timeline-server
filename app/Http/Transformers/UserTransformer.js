@@ -1,5 +1,3 @@
-const User = require('../../Models/User');
-
 /**
  * Transform user to a proper response user object
  *
