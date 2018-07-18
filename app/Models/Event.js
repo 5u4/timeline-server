@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
 /**
- * @property username {String}
- * @property password {String}
+ * @property title       {String}
+ * @property description {String}
+ * @property postedAt    {Number}
+ * @property createdAt   {Number}
+ * @property updatedAt   {Number}
  */
 const Event = new mongoose.Schema({
     title: {
@@ -34,7 +37,7 @@ const Event = new mongoose.Schema({
     updatedAt: {
         type: Number,
         default: null,
-        required: true,
+        required: false,
     },
 });
 

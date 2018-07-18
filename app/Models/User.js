@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 /**
  * @property username {String}
  * @property password {String}
+ * @property events   {Array}
  */
 const User = new mongoose.Schema({
     username: {

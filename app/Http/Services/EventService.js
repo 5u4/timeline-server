@@ -63,22 +63,16 @@ const getAllUserEvents = (user) => {
  */
 const createUserEvent = (title, description = null, postedAt = null) => {
     return new Promise((resolve, reject) => {
-        const data = {
+        const event = new Event({
             title: title,
-        };
-
-        if (description) {
-            data.description = description;
-        }
-
-        if (postedAt) {
-            data.postedAt = postedAt;
-        }
-
-        const event = new Event(data);
+            description: description,
+            postedAt: postedAt,
+        });
 
         event.save(err => {
-            reject(err);
+            if (err) {
+                reject(err);
+            }
         });
 
         resolve(event);
