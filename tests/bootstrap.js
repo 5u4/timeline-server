@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const User = require('../app/Models/User');
+const Event = require('../app/Models/Event');
 
 /**
  * Remove all database records
@@ -9,6 +10,7 @@ const User = require('../app/Models/User');
  */
 const removeAllDBRecords = () => {
     User.remove().exec();
+    Event.remove().exec();
 };
 
 /**
