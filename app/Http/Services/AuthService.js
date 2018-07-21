@@ -13,6 +13,11 @@ const User      = require('../../Models/User');
  */
 const isCorrectCredential = async function(username, password) {
     const user = await User.findOne({username: username});
+    
+    if (!user) {
+        return false;
+    }
+
     return await bcrypt.compare(password, user.password);
 };
 

@@ -2,15 +2,9 @@ const bootstrap   = require('./bootstrap');
 const chai        = bootstrap.getChai();
 const should      = chai.should();
 const UserFactory = require('../database/factories/UserFactory');
+const server      = bootstrap.connect();
 
 describe('AuthController tests', () => {
-    let server;
-
-    before(done => {
-        server = bootstrap.connect();
-        done();
-    });
-
     beforeEach(done => {
         bootstrap.removeAllDBRecords();
         done();

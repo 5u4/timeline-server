@@ -29,7 +29,6 @@ const connect = () => {
  */
 const disconnect = (server) => {
     server.close();
-    require('mongoose').connection.close();
 };
 
 /**

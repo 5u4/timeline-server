@@ -55,7 +55,7 @@ const index = async function(req, res) {
  *         updatedAt:   {Number},
  *     }
  */
-const store = async function(req, res, next) {
+const store = async function(req, res) {
     const event = await EventService.createUserEvent(req.user, req.body.title, req.body.description, req.body.postedAt);
 
     res.status(201).json(EventTransformer.make(event));
