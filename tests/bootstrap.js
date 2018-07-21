@@ -1,6 +1,6 @@
 process.env.NODE_ENV = 'test';
 
-const User = require('../app/Models/User');
+const User  = require('../app/Models/User');
 const Event = require('../app/Models/Event');
 
 /**

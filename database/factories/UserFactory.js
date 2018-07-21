@@ -5,51 +5,42 @@ const bcrypt = require('bcrypt');
 /**
  * Build a user
  *
- * @param username {String}
- * @param password {String}
+ * @param {String} username
+ * @param {String} password 
  *
- * @returns {Promise<any>}
- *
- * @example resolve {User}
+ * @returns {User} The newly created user
  */
-const make = (username = null, password = 'test_password') => {
+const make = async function(username = null, password = 'test_password') {
     if (!username) {
         username = faker.name.firstName;
     }
 
-    return new Promise(resolve => {
-        bcrypt.hash(password, require('../../configs/auth').saltRounds, (err, hashedPassword) => {
-            const user = new User({
-                username: username,
-                password: hashedPassword,
-            });
+    const hashedPassword = await bcrypt.hash(password, require('../../configs/auth').saltRounds);
 
-            resolve(user);
-        });
+    return new User({
+        username: username,
+        password: hashedPassword,
     });
 };
 
 /**
  * Build a user and save it to the database
  *
- * @param username {String}
- * @param password {String}
+ * @param {String} username
+ * @param {String} password
  *
- * @returns {Promise<any>}
- *
- * @example resolve {User}
+ * @returns {User} The stored user
  */
-const create = (username = null, password = 'test_password') => {
+const create = async function(username = null, password = 'test_password') {
     if (!username) {
         username = faker.name.firstName;
     }
 
-    return new Promise(resolve => {
-        make(username, password).then(user => {
-            user.save();
-            resolve(user);
-        });
-    });
+    const user = await make(username, password);
+
+    await user.save();
+
+    return user;
 };
 
 module.exports = {

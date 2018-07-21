@@ -94,10 +94,13 @@ describe('AuthController tests', () => {
                     })
                     .end((err, res) => {
                         res.should.have.status(200);
-                        res.body.should.have.property('success');
                         res.body.should.have.property('token');
-                        res.body.success.should.be.equal(true);
+                        res.body.should.have.property('user');
                         res.body.token.should.be.a('string');
+                        res.body.user.should.be.an('object');
+                        res.body.user.should.have.property('id');
+                        res.body.user.should.have.property('username');
+                        res.body.user.username.should.be.equal('test_username');
                         done();
                     });
             });

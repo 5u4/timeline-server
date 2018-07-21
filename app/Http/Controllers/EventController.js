@@ -1,6 +1,5 @@
-const BadRequestHttpExceptionHandler = require('../../Exceptions/BadRequestHttpExceptionHandler');
-
 const EventService = require('../Services/EventService');
+const Event        = require('../../Models/Event');
 
 const EventTransformer = require('../Transformers/EventTransformer');
 
@@ -11,7 +10,7 @@ const EventTransformer = require('../Transformers/EventTransformer');
  * @param res
  * @param next
  *
- * @param req.header.x-access-token {String} The user auth token | required
+ * @param {String} req.headers['x-access-token'] The user auth token | required
  *
  * @example success response:
  *
@@ -26,12 +25,10 @@ const EventTransformer = require('../Transformers/EventTransformer');
  *         updatedAt:   {Number},
  *     },]
  */
-const index = (req, res, next) => {
-    EventService.getAllUserEvents(req.user).then(events => {
-        res.json(EventTransformer.collection(events));
-    }, err => {
-        next(new BadRequestHttpExceptionHandler(res, ['Unable to get user events']));
-    });
+const index = async function(req, res) {
+    const events = await Event.find({'_id': {$in: req.user.events}});
+
+    res.json(EventTransformer.collection(events));
 };
 
 /**
@@ -41,10 +38,10 @@ const index = (req, res, next) => {
  * @param res
  * @param next
  *
- * @param req.header.x-access-token {String} The user auth token             | required
- * @param req.body.title            {String} The title of the event          | required
- * @param req.body.description      {String} The description of the event
- * @param req.body.postedAt         {Number} The timestamp of the event date
+ * @param {String} req.headers['x-access-token']  The user auth token             | required
+ * @param {String} req.body.title                 The title of the event          | required
+ * @param {String} req.body.description           The description of the event
+ * @param {Number} req.body.postedAt              The timestamp of the event date
  *
  * @example success response:
  *     status: 201 CREATED
@@ -58,12 +55,10 @@ const index = (req, res, next) => {
  *         updatedAt:   {Number},
  *     }
  */
-const store = (req, res, next) => {
-    EventService.createUserEvent(req.user, req.body.title, req.body.description, req.body.postedAt).then(event => {
-        res.status(201).json(EventTransformer.make(event));
-    }, err => {
-        next(new BadRequestHttpExceptionHandler(res, ['Unable to create event']));
-    });
+const store = async function(req, res, next) {
+    const event = await EventService.createUserEvent(req.user, req.body.title, req.body.description, req.body.postedAt);
+
+    res.status(201).json(EventTransformer.make(event));
 };
 
 module.exports = {
