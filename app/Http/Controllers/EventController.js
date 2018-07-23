@@ -61,7 +61,14 @@ const store = async function(req, res) {
     res.status(201).json(EventTransformer.make(event));
 };
 
+const update = async function(req, res) {
+    const event = await EventService.editUserEvent(req.params.eventId, req.body);
+
+    res.status(200).json(EventTransformer.make(event));
+};
+
 module.exports = {
     index,
     store,
+    update,
 };

@@ -29,6 +29,19 @@ const createUserEvent = async function(user, title, description = null, postedAt
     return await event;
 };
 
+/**
+ * Update an user event
+ * 
+ * @param {Number} eventId The event id
+ * @param {Object} updatedFields The updated fields as an object
+ */
+const editUserEvent = async function(eventId, updatedFields) {
+    await Event.findByIdAndUpdate(eventId, updatedFields);
+
+    return await Event.findById(eventId);
+};
+
 module.exports = {
     createUserEvent,
+    editUserEvent,
 };
