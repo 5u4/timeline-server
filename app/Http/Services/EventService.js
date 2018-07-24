@@ -2,6 +2,20 @@ const Event = require('../../Models/Event');
 const User  = require('../../Models/User');
 
 /**
+ * Check if the event belong to the user
+ * 
+ * @param {Number} eventId The event id
+ * @param {String} userId  The user id
+ * 
+ * @returns {Boolean} If the event belongs to user
+ */
+const isEventBelongsToUser = async (eventId, userId) => {
+    const user = await User.findById(userId);
+
+    return user.events.indexOf(eventId) > -1;
+};
+
+/**
  * Create an user event
  *
  * @param {User}   user        The current user
@@ -34,6 +48,8 @@ const createUserEvent = async function(user, title, description = null, postedAt
  * 
  * @param {Number} eventId The event id
  * @param {Object} updatedFields The updated fields as an object
+ * 
+ * @returns {Event} The updated event
  */
 const editUserEvent = async function(eventId, updatedFields) {
     await Event.findByIdAndUpdate(eventId, updatedFields);
@@ -42,6 +58,7 @@ const editUserEvent = async function(eventId, updatedFields) {
 };
 
 module.exports = {
+    isEventBelongsToUser,
     createUserEvent,
     editUserEvent,
 };

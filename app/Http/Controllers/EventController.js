@@ -3,6 +3,8 @@ const Event        = require('../../Models/Event');
 
 const EventTransformer = require('../Transformers/EventTransformer');
 
+const NotFoundHttpExceptionHandler = require('../../Exceptions/NotFoundHttpExceptionHandler');
+
 /**
  * List all user events
  *
@@ -61,7 +63,11 @@ const store = async function(req, res) {
     res.status(201).json(EventTransformer.make(event));
 };
 
-const update = async function(req, res) {
+const update = async function(req, res, next) {
+    if (!await Event.findById(req.params.eventId) || !await EventService.isEventBelongsToUser(req.params.eventId, req.user._id)) {
+        return next(new NotFoundHttpExceptionHandler(res, ['The event does not exist']));
+    }
+
     const event = await EventService.editUserEvent(req.params.eventId, req.body);
 
     res.status(200).json(EventTransformer.make(event));
