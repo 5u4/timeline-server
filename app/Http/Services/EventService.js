@@ -52,7 +52,23 @@ const createUserEvent = async function(user, title, description = null, postedAt
  * @returns {Event} The updated event
  */
 const editUserEvent = async function(eventId, updatedFields) {
-    await Event.findByIdAndUpdate(eventId, updatedFields);
+    const fields = {};
+
+    if (updatedFields.title) {
+        fields.title = updatedFields.title;
+    }
+
+    if (updatedFields.description) {
+        fields.description = updatedFields.description;
+    }
+
+    if (updatedFields.postedAt) {
+        fields.postedAt = updatedFields.postedAt;
+    }
+
+    fields.updatedAt = new Date();
+
+    await Event.findByIdAndUpdate(eventId, fields);
 
     return await Event.findById(eventId);
 };
