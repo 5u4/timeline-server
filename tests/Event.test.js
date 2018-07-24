@@ -9,14 +9,17 @@ const server       = bootstrap.connect();
  * Create an user and get its token
  */
 const getToken = async () => {
-    await UserFactory.create('test_username', 'test_password');
+    const user = await UserFactory.create('test_username', 'test_password');
 
     const tokenRequest = await chai.request(server).post('/api/v1/auth/login').send({
         username: 'test_username',
         password: 'test_password',
     });
 
-    return new Promise(resolve => resolve(tokenRequest.body.token));
+    return new Promise(resolve => resolve({
+        token: tokenRequest.body.token,
+        user: user,
+    }));
 }
 
 describe('EventController tests', () => {
@@ -27,10 +30,10 @@ describe('EventController tests', () => {
 
     describe('Test index events', () => {
         it('should return the user events', done => {
-            getToken().then(token => {
+            getToken().then(payload => {
                 chai.request(server)
                     .get('/api/v1/events')
-                    .set('x-access-token', token)
+                    .set('x-access-token', payload.token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.an('array');
@@ -42,10 +45,10 @@ describe('EventController tests', () => {
 
     describe('Test store events', () => {
         it('should store an event and response it', done => {
-            getToken().then(token => {
+            getToken().then(payload => {
                 chai.request(server)
                     .post('/api/v1/events')
-                    .set('x-access-token', token)
+                    .set('x-access-token', payload.token)
                     .send({
                         title: 'Test event title',
                     })
@@ -61,6 +64,28 @@ describe('EventController tests', () => {
                         done();
                     });
             });
+        });
+    });
+
+    describe('Test edit events', () => {
+        it('should edit an event', done => {
+            getToken().then(payload => {
+                EventFactory.create(payload.user._id).then(event => {
+                    chai.request(server)
+                        .patch('/api/v1/events/' + event._id)
+                        .set('x-access-token', payload.token)
+                        .send({
+                            title: 'Update title',
+                        })
+                        .end((err, res) => {
+                            res.should.have.status(200);
+                            res.body.should.have.property('title');
+                            res.body.title.should.be.equal('Update title');
+                            done();
+                        });
+                });
+            });
+            
         });
     });
 

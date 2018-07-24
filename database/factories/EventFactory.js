@@ -1,17 +1,18 @@
-const faker  = require('faker');
-const Event  = require('../../app/Models/Event');
+const faker = require('faker');
+const Event = require('../../app/Models/Event');
+const User  = require('../../app/Models/User');
 
 /**
  * Build an event
  *
- * @param {User}   user         The user that owns the event
+ * @param {String} userId       The user that owns the event
  * @param {String} title        The title of the event
  * @param {String} description  The description, default null
  * @param {Number} postedAt     The postedAt timestamp of the event, default current
  *
  * @returns {Event}
  */
-const make = async function(user, title = null, description = null, postedAt = null) {
+const make = async function(userId, title = null, description = null, postedAt = null) {
     if (!title) {
         title = faker.name.title;
     }
@@ -26,9 +27,7 @@ const make = async function(user, title = null, description = null, postedAt = n
         postedAt: postedAt,
     });
 
-    user.events.push(event._id);
-
-    await user.save();
+    await User.findByIdAndUpdate(userId, {$push: {events: event._id}});
 
     return event;
 };
@@ -36,14 +35,14 @@ const make = async function(user, title = null, description = null, postedAt = n
 /**
  * Build an event and save it to the database
  * 
- * @param {User}   user         The user that owns the event
+ * @param {String} userId       The user that owns the event
  * @param {String} title        The title of the event
  * @param {String} description  The description, default null
  * @param {Number} postedAt     The postedAt timestamp of the event, default current
  *
  * @returns {Event}
  */
-const create = async function(user, title = null, description = null, postedAt = null) {
+const create = async function(userId, title = null, description = null, postedAt = null) {
     if (!title) {
         title = faker.name.title;
     }
@@ -52,7 +51,7 @@ const create = async function(user, title = null, description = null, postedAt =
         postedAt = new Date();
     }
 
-    const event = await make(user, title, description, postedAt);
+    const event = await make(userId, title, description, postedAt);
 
     await event.save();
 
