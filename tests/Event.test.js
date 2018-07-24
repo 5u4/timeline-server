@@ -126,6 +126,60 @@ describe('EventController tests', () => {
         });
     });
 
+    describe('Test destroy events', () => {
+        it('should delete an event', done => {
+            getToken().then(payload => {
+                EventFactory.create(payload.user._id).then(event => {
+                    chai.request(server)
+                        .delete('/api/v1/events/' + event._id)
+                        .set('x-access-token', payload.token)
+                        .end((err, res) => {
+                            res.should.have.status(204);
+                            done();
+                        });
+                });
+            });
+        });
+
+        it('should response not found when event is not found', done => {
+            getToken().then(payload => {
+                chai.request(server)
+                    .delete('/api/v1/events/5b5262611e46b62ea07ec1d9')
+                    .set('x-access-token', payload.token)
+                    .send({
+                        title: 'Update title',
+                    })
+                    .end((err, res) => {
+                        res.should.have.status(404);
+                        res.body.should.have.property('messages');
+                        res.body.messages.should.be.an('array');
+                        done();
+                    });
+            });
+        });
+
+        it('should response not found when event does not belongs to user', done => {
+            getToken().then(payload => {
+                UserFactory.create().then(user => {
+                    EventFactory.create(user._id).then(event => {
+                        chai.request(server)
+                            .delete('/api/v1/events/5b5262611e46b62ea07ec1d9')
+                            .set('x-access-token', payload.token)
+                            .send({
+                                title: 'Update title',
+                            })
+                            .end((err, res) => {
+                                res.should.have.status(404);
+                                res.body.should.have.property('messages');
+                                res.body.messages.should.be.an('array');
+                                done();
+                            });
+                    });
+                });
+            });
+        });
+    });
+
     after(done => {
         bootstrap.removeAllDBRecords();
         bootstrap.disconnect(server);
