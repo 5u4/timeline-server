@@ -33,7 +33,7 @@ const login = async function(req, res, next) {
     const user = await User.findOne({username: req.body.username});
 
     res.json({
-        token: await AuthService.getAuthToken(user),
+        token: await AuthService.getAuthToken(user._id),
         user: UserTransformer.make(user),
     });
 };
@@ -85,7 +85,7 @@ const register = async function(req, res, next) {
 
     const user = await UserService.createUser(req.body.username, req.body.password);
 
-    const token = await AuthService.getAuthToken(user);
+    const token = await AuthService.getAuthToken(user._id);
 
     res.status(201).json({
         user: UserTransformer.make(user),

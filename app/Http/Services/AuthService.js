@@ -26,14 +26,14 @@ const isCorrectCredential = async function(username, password) {
  * 
  * Expire time can be set at /configs/jwt.expiresIn
  *
- * @param {User} user The user that is going to be sign to a token
+ * @param {String} userId The user that is going to be sign to a token
  *
  * @returns {String} The auth token
  */
-const getAuthToken = async function(user) {
-    return jwt.sign({id: user._id}, jwtConfig.jwtsecret, {
+const getAuthToken = async function(userId) {
+    return jwt.sign({id: userId}, jwtConfig.jwtsecret, {
         expiresIn: jwtConfig.expiresIn
-    })
+    });
 };
 
 module.exports = {
