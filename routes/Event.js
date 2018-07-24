@@ -8,6 +8,6 @@ const Authenticated = require('../app/Http/Middlewares/Authenticated');
 /* version 1 */
 router.get('/', Authenticated, EventController.index);
 router.post('/', [Authenticated, validate(EventValidator.store)], EventController.store);
-router.patch('/:eventId', [Authenticated], EventController.update);
+router.patch('/:eventId', [Authenticated, validate(EventValidator.update)], EventController.update);
 
 module.exports = router;

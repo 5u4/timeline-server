@@ -28,6 +28,29 @@ const store = {
     }
 };
 
+/**
+ * Update validation
+ */
+const update = {
+    params: {
+        eventId: Joi.string()
+            .required(),
+    },
+
+    body: {
+        title: Joi.string()
+            .min(1).max(72),
+
+        description: Joi.string()
+            .max(65536),
+
+        postedAt: Joi.number()
+            .positive()
+            .integer(),
+    }
+};
+
 module.exports = {
     store,
+    update,
 };
