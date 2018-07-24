@@ -50,7 +50,15 @@ const update = {
     }
 };
 
+const destroy = {
+    params: {
+        eventId: Joi.string()
+            .required(),
+    },
+};
+
 module.exports = {
     store,
     update,
+    destroy,
 };

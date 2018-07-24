@@ -3,7 +3,8 @@ const Event        = require('../../Models/Event');
 
 const EventTransformer = require('../Transformers/EventTransformer');
 
-const NotFoundHttpExceptionHandler = require('../../Exceptions/NotFoundHttpExceptionHandler');
+const NotFoundException            = require('../../Exceptions/NotFoundHttpExceptionHandler');
+const InternalServerErrorException = require('../../Exceptions/InternalServerErrorHttpExceptionHandler');
 
 /**
  * List all user events
@@ -63,9 +64,34 @@ const store = async function(req, res) {
     res.status(201).json(EventTransformer.make(event));
 };
 
+/**
+ * Edit an event
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ * 
+ * @param {String} req.headers['x-access-token']  The user auth token             | required
+ * @param {String} req.params.eventId             The event id                    | required
+ * @param {String} req.body.title                 The title of the event
+ * @param {String} req.body.description           The description of the event
+ * @param {Number} req.body.postedAt              The timestamp of the event date
+ * 
+ * @example success response:
+ *     status: 200 OK
+ *
+ *     {
+ *         id:          {String},
+ *         title:       {String},
+ *         description: {String},
+ *         postedAt:    {Number},
+ *         createdAt:   {Number},
+ *         updatedAt:   {Number},
+ *     }
+ */
 const update = async function(req, res, next) {
     if (!await Event.findById(req.params.eventId) || !await EventService.isEventBelongsToUser(req.params.eventId, req.user._id)) {
-        return next(new NotFoundHttpExceptionHandler(res, ['The event does not exist']));
+        return next(new NotFoundException(res, ['The event does not exist']));
     }
 
     const event = await EventService.editUserEvent(req.params.eventId, req.body);
@@ -73,8 +99,35 @@ const update = async function(req, res, next) {
     res.status(200).json(EventTransformer.make(event));
 };
 
+/**
+ * Delete an user event
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ * 
+ * @param {String} req.params.eventId The event id | required
+ * 
+ * @example success response:
+ *     status: 204 NO CONTENT
+ */
+const destroy = async (req, res, next) => {
+    if (!await Event.findById(req.params.eventId) || !await EventService.isEventBelongsToUser(req.params.eventId, req.user._id)) {
+        return next(new NotFoundException(res, ['The event does not exist']));
+    }
+
+    const isDeleted = await EventService.deleteUserEvent(req.user._id, req.params.eventId);
+
+    if (!isDeleted) {
+        return next(new InternalServerErrorException(res));
+    }
+
+    res.status(204).send();
+};
+
 module.exports = {
     index,
     store,
     update,
+    destroy,
 };

@@ -73,8 +73,27 @@ const editUserEvent = async function(eventId, updatedFields) {
     return await Event.findById(eventId);
 };
 
+/**
+ * Delete an user event
+ * 
+ * @param {String} userId  The user id
+ * @param {String} eventId The event id that is going to be deleted
+ * 
+ * @returns {Boolean} If the event is been deleted
+ */
+const deleteUserEvent = async (userId, eventId) => {
+    if (!await Event.findByIdAndRemove(eventId)) {
+        return false;
+    }
+
+    const eventObjectId = require('mongoose').mongo.ObjectId(eventId);
+
+    return !!await User.findByIdAndUpdate(userId, {$pull: {events: eventObjectId}});
+};
+
 module.exports = {
     isEventBelongsToUser,
     createUserEvent,
     editUserEvent,
+    deleteUserEvent,
 };

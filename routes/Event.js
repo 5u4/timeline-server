@@ -9,5 +9,6 @@ const Authenticated = require('../app/Http/Middlewares/Authenticated');
 router.get('/', Authenticated, EventController.index);
 router.post('/', [Authenticated, validate(EventValidator.store)], EventController.store);
 router.patch('/:eventId', [Authenticated, validate(EventValidator.update)], EventController.update);
+router.delete('/:eventId', [Authenticated, validate(EventValidator.destroy)], EventController.destroy);
 
 module.exports = router;
