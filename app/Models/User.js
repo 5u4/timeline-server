@@ -1,9 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose  = require('mongoose');
+const TagSchema = require('./Tag').schema;
 
 /**
- * @property username {String}
- * @property password {String}
- * @property events   {Array}
+ * @property {String} username
+ * @property {String} password
+ * @property {Array}  events
+ * @property {Array}  tags
  */
 const User = new mongoose.Schema({
     username: {
@@ -22,7 +24,13 @@ const User = new mongoose.Schema({
     events: {
         type: Array,
         default: [],
-        required: true,
+        required: false,
+    },
+
+    tags: {
+        type: [TagSchema],
+        default: [],
+        required: false,
     },
 });
 

@@ -15,7 +15,7 @@ const store = {
             .max(65536),
 
         color: Joi.string()
-            .hex(),
+            .regex(/^#[A-Fa-f0-9]{6}/),
 
         createdAt: Joi.number()
             .positive()

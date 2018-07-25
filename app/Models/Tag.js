@@ -4,11 +4,9 @@ const mongoose = require('mongoose');
  * @property name        {String}
  * @property description {String}
  * @property color       {String}
- * @property createdAt   {Number}
- * @property updatedAt   {Number}
  */
-const Event = new mongoose.Schema({
-    title: {
+const Tag = new mongoose.Schema({
+    name: {
         type: String,
         required: true,
         min: 1,
@@ -22,23 +20,13 @@ const Event = new mongoose.Schema({
         max: 65536,
     },
 
-    postedAt: {
-        type: Number,
-        default: new Date(),
-        required: false,
-    },
-
-    createdAt: {
-        type: Number,
-        default: new Date(),
-        required: false,
-    },
-
-    updatedAt: {
-        type: Number,
-        default: null,
+    color: {
+        type: String,
         required: false,
     },
 });
 
-module.exports = mongoose.model('event', Event);
+module.exports = {
+    model: mongoose.model('tag', Tag),
+    schema: Tag,
+};

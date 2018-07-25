@@ -1,3 +1,7 @@
+const TagService     = require('../Services/TagService');
+const Tag            = require('../../Models/Tag');
+const TagTransformer = require('../Transformers/TagTransformer');
+
 /**
  * List all user tags
  *
@@ -16,12 +20,10 @@
  *         name:        {String},
  *         description: {String},
  *         color:       {Number},
- *         createdAt:   {Number},
- *         updatedAt:   {Number},
  *     },]
  */
 const index = async function(req, res) {
-
+    res.status(200).json(TagTransformer.collection(req.user.tags));
 };
 
 /**
@@ -44,12 +46,12 @@ const index = async function(req, res) {
  *         name:        {String},
  *         description: {String},
  *         color:       {Number},
- *         createdAt:   {Number},
- *         updatedAt:   {Number},
  *     }
  */
 const store = async function(req, res) {
+    const tag = await TagService.createUserTag(req.user, req.body.name, req.body.description, req.body.color);
 
+    res.status(201).json(TagTransformer.make(tag));
 };
 
 /**
@@ -73,8 +75,6 @@ const store = async function(req, res) {
  *         name:        {String},
  *         description: {String},
  *         color:       {Number},
- *         createdAt:   {Number},
- *         updatedAt:   {Number},
  *     }
  */
 const update = async function(req, res, next) {
