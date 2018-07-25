@@ -44,7 +44,7 @@ const update = {
             .max(65536),
 
         color: Joi.string()
-            .hex(),
+            .regex(/^#[A-Fa-f0-9]{6}/),
     }
 };
 

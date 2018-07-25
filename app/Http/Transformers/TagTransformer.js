@@ -9,8 +9,6 @@
  *     name:        {String},
  *     description: {String},
  *     color:       {String},
- *     createdAt:   {Number},
- *     updatedAt:   {Number},
  * }
  */
 const make = (tag) => {
@@ -19,8 +17,6 @@ const make = (tag) => {
         name       : tag.name,
         description: tag.description,
         color      : tag.color,
-        createdAt  : tag.createdAt,
-        updatedAt  : tag.updatedAt,
     };
 };
 

@@ -2,6 +2,8 @@ const TagService     = require('../Services/TagService');
 const Tag            = require('../../Models/Tag');
 const TagTransformer = require('../Transformers/TagTransformer');
 
+const NotFoundException = require('../../Exceptions/NotFoundHttpExceptionHandler');
+
 /**
  * List all user tags
  *
@@ -78,7 +80,13 @@ const store = async function(req, res) {
  *     }
  */
 const update = async function(req, res, next) {
+    const tag = await TagService.editUserTag(req.user._id, req.params.tagId, req.body);
 
+    if (!tag) {
+        return next(new NotFoundException(res, ['The tag does not exist']));
+    }
+
+    res.status(200).json(TagTransformer.make(tag));
 };
 
 /**

@@ -37,35 +37,41 @@ const createUserTag = async function(user, name, description = null, color = nul
     return await tag;
 };
 
-// /**
-//  * Update an user event
-//  * 
-//  * @param {Number} eventId The event id
-//  * @param {Object} updatedFields The updated fields as an object
-//  * 
-//  * @returns {Event} The updated event
-//  */
-// const editUserEvent = async function(eventId, updatedFields) {
-//     const fields = {};
+/**
+ * Update an user tag
+ * 
+ * @param {String} userId        The user id
+ * @param {String} tagId         The tag id
+ * @param {Object} updatedFields The updated fields as an object
+ * 
+ * @returns {Tag} The updated tag
+ */
+const editUserTag = async function(userId, tagId, updatedFields) {
+    const fields = {};
 
-//     if (updatedFields.title) {
-//         fields.title = updatedFields.title;
-//     }
+    if (updatedFields.name) {
+        fields['tags.$.name'] = updatedFields.name;
+    }
 
-//     if (updatedFields.description) {
-//         fields.description = updatedFields.description;
-//     }
+    if (updatedFields.description) {
+        fields['tags.$.description'] = updatedFields.description;
+    }
 
-//     if (updatedFields.postedAt) {
-//         fields.postedAt = updatedFields.postedAt;
-//     }
+    if (updatedFields.color) {
+        fields['tags.$.color'] = updatedFields.color;
+    }
 
-//     fields.updatedAt = new Date();
+    const user = await User.findOneAndUpdate({
+        _id: userId,
+        'tags._id': tagId,
+    }, {$set: fields});
 
-//     await Event.findByIdAndUpdate(eventId, fields);
+    if (!user) {
+        return undefined;
+    }
 
-//     return await Event.findById(eventId);
-// };
+    return user.tags.find(tag => tag._id == tagId);
+};
 
 // /**
 //  * Delete an user event
@@ -88,6 +94,6 @@ const createUserTag = async function(user, name, description = null, color = nul
 module.exports = {
     isTagBelongsToUser,
     createUserTag,
-    // editUserEvent,
+    editUserTag,
     // deleteUserEvent,
 };
