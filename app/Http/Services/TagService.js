@@ -73,27 +73,21 @@ const editUserTag = async function(userId, tagId, updatedFields) {
     return user.tags.find(tag => tag._id == tagId);
 };
 
-// /**
-//  * Delete an user event
-//  * 
-//  * @param {String} userId  The user id
-//  * @param {String} eventId The event id that is going to be deleted
-//  * 
-//  * @returns {Boolean} If the event is been deleted
-//  */
-// const deleteUserEvent = async (userId, eventId) => {
-//     if (!await Event.findByIdAndRemove(eventId)) {
-//         return false;
-//     }
-
-//     const eventObjectId = require('mongoose').mongo.ObjectId(eventId);
-
-//     return !!await User.findByIdAndUpdate(userId, {$pull: {events: eventObjectId}});
-// };
+/**
+ * Delete an user tag
+ * 
+ * @param {String} userId The user id
+ * @param {String} tagId  The tag id that is going to be deleted
+ * 
+ * @returns {Boolean} If the tag is been deleted
+ */
+const deleteUserTag = async (userId, tagId) => {
+    return !!await User.findByIdAndUpdate(userId, {$pull: {tags: {_id: tagId}}});
+};
 
 module.exports = {
     isTagBelongsToUser,
     createUserTag,
     editUserTag,
-    // deleteUserEvent,
+    deleteUserTag,
 };

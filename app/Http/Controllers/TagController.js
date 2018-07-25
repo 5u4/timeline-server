@@ -1,5 +1,5 @@
 const TagService     = require('../Services/TagService');
-const Tag            = require('../../Models/Tag');
+const User           = require('../../Models/User');
 const TagTransformer = require('../Transformers/TagTransformer');
 
 const NotFoundException = require('../../Exceptions/NotFoundHttpExceptionHandler');
@@ -102,7 +102,18 @@ const update = async function(req, res, next) {
  *     status: 204 NO CONTENT
  */
 const destroy = async (req, res, next) => {
+    const user = await User.findOne({
+        _id: req.user._id,
+        tags: {_id: req.params.tagId}
+    });
 
+    if (!user) {
+        return next(new NotFoundException(res, ['The tag does not exist']));
+    }
+
+    await TagService.deleteUserTag(req.user._id, req.params.tagId);
+
+    res.status(204).send();
 };
 
 module.exports = {
