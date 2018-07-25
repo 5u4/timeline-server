@@ -17,6 +17,10 @@ const make = async function(userId, title = null, description = null, postedAt =
         title = faker.name.title;
     }
 
+    if (!description) {
+        description = faker.lorem.sentence;
+    }
+
     if (!postedAt) {
         postedAt = new Date();
     }
@@ -43,14 +47,6 @@ const make = async function(userId, title = null, description = null, postedAt =
  * @returns {Event}
  */
 const create = async function(userId, title = null, description = null, postedAt = null) {
-    if (!title) {
-        title = faker.name.title;
-    }
-
-    if (!postedAt) {
-        postedAt = new Date();
-    }
-
     const event = await make(userId, title, description, postedAt);
 
     await event.save();

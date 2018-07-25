@@ -70,7 +70,7 @@ const editUserTag = async function(userId, tagId, updatedFields) {
         return undefined;
     }
 
-    return user.tags.find(tag => tag._id == tagId);
+    return (await User.findById(userId)).tags.find(tag => tag._id == tagId);
 };
 
 /**
@@ -78,11 +78,9 @@ const editUserTag = async function(userId, tagId, updatedFields) {
  * 
  * @param {String} userId The user id
  * @param {String} tagId  The tag id that is going to be deleted
- * 
- * @returns {Boolean} If the tag is been deleted
  */
 const deleteUserTag = async (userId, tagId) => {
-    return !!await User.findByIdAndUpdate(userId, {$pull: {tags: {_id: tagId}}});
+    await User.findByIdAndUpdate(userId, {$pull: {tags: {_id: tagId}}});
 };
 
 module.exports = {

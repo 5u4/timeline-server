@@ -77,7 +77,7 @@ describe('EventController tests', function() {
 
             const token = await getUserToken('test_username');
 
-            const event = await EventFactory.create(user._id.toString());
+            const event = await EventFactory.create(user._id);
 
             const res = await chai.request(server)
                 .patch('/api/v1/events/' + event._id)
@@ -106,7 +106,7 @@ describe('EventController tests', function() {
             res.body.should.have.property('messages').an('array');
         });
 
-        it('should response not found when event does not belongs to user', async function() {
+        it('should response not found when event does not belong to user', async function() {
             await UserFactory.create('test_username');
             
             const token = await getUserToken('test_username');
@@ -155,7 +155,7 @@ describe('EventController tests', function() {
             res.body.should.have.property('messages').an('array');
         });
 
-        it('should response not found when event does not belongs to user', async function() {
+        it('should response not found when event does not belong to user', async function() {
             await UserFactory.create('test_username');
             
             const token = await getUserToken('test_username');

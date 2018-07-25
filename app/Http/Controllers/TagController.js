@@ -101,16 +101,7 @@ const update = async function(req, res, next) {
  * @example success response:
  *     status: 204 NO CONTENT
  */
-const destroy = async (req, res, next) => {
-    const user = await User.findOne({
-        _id: req.user._id,
-        tags: {_id: req.params.tagId}
-    });
-
-    if (!user) {
-        return next(new NotFoundException(res, ['The tag does not exist']));
-    }
-
+const destroy = async (req, res) => {
     await TagService.deleteUserTag(req.user._id, req.params.tagId);
 
     res.status(204).send();

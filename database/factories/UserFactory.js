@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
  */
 const make = async function(username = null, password = 'test_password') {
     if (!username) {
-        username = faker.name.firstName;
+        username = faker.name.firstName + faker.name.lastName;
     }
 
     const hashedPassword = await bcrypt.hash(password, require('../../configs/auth').saltRounds);
@@ -32,10 +32,6 @@ const make = async function(username = null, password = 'test_password') {
  * @returns {User} The stored user
  */
 const create = async function(username = null, password = 'test_password') {
-    if (!username) {
-        username = faker.name.firstName;
-    }
-
     const user = await make(username, password);
 
     await user.save();
