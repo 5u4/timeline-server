@@ -1,11 +1,11 @@
 require('dotenv').config();
 
-const isTestingEnv = process.env.NODE_ENV === 'test';
-
 const app = require('./bootstrap/app');
 
-const port = isTestingEnv
-    ? require('./configs/app').testing.port
-    : require('./configs/app').express.port;
+const appConfig = require('./configs/app');
+
+const port = (process.env.NODE_ENV === 'test')
+    ? appConfig.testing.port || appConfig.express.port
+    : appConfig.express.port;
 
 module.exports = app.listen(port);

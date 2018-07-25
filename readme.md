@@ -453,7 +453,7 @@ A backend server for recording events.
 
 ## Server
 
-The back-end server is hosted on https://treehole-server.herokuapp.com/. Please do not overwhelm the server.
+The back-end server is hosted on https://timeline-server.herokuapp.com/. Please do not overwhelm the server.
 
 ## Tests
 
