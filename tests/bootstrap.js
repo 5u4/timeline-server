@@ -5,8 +5,6 @@ const Event = require('../app/Models/Event');
 
 /**
  * Remove all database records
- *
- * @param done
  */
 const removeAllDBRecords = () => {
     User.remove().exec();
@@ -23,12 +21,19 @@ const connect = () => {
 };
 
 /**
- * Disconnect express server and mongodb connection
+ * Disconnect express server
  *
  * @param server
  */
 const disconnect = (server) => {
     server.close();
+};
+
+/**
+ * Disconnect mongoose connection
+ */
+const disconnectMongoose = () => {
+    require('mongoose').connection.close();
 };
 
 /**
@@ -47,5 +52,6 @@ module.exports = {
     removeAllDBRecords,
     connect,
     disconnect,
+    disconnectMongoose,
     getChai,
 };
