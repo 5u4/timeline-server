@@ -131,5 +131,6 @@ describe('TagController tests', function() {
     after(function() {
         bootstrap.removeAllDBRecords();
         bootstrap.disconnect(server);
+        bootstrap.disconnectMongoose();
     });
 });

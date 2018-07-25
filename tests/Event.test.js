@@ -176,6 +176,5 @@ describe('EventController tests', function() {
     after(function() {
         bootstrap.removeAllDBRecords();
         bootstrap.disconnect(server);
-        bootstrap.disconnectMongoose();
     });
 });

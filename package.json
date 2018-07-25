@@ -4,7 +4,7 @@
   "description": "⏳ Record important moments in your life",
   "main": "main.js",
   "scripts": {
-    "test": "find ./tests -name '*.test.js' | xargs mocha -R spec"
+    "test": "mocha tests --recursive"
   },
   "repository": {
     "type": "git",
