@@ -451,6 +451,10 @@ A backend server for recording events.
 </pre>
 </details><br/>
 
+## Server
+
+The back-end server is hosted on https://treehole-server.herokuapp.com/. Please do not overwhelm the server.
+
 ## Tests
 
 ```bash
