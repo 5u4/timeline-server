@@ -5,6 +5,8 @@ const UserFactory = require('../database/factories/UserFactory');
 const server      = bootstrap.connect();
 
 describe('AuthController tests', function() {
+    this.timeout(5000);
+
     beforeEach(function() {
         bootstrap.removeAllDBRecords();
     });

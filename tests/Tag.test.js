@@ -23,6 +23,8 @@ const getUserToken = async (username, password = 'test_password') => {
 };
 
 describe('TagController tests', function() {
+    this.timeout(5000);
+
     beforeEach(function() {
         bootstrap.removeAllDBRecords();
     });
