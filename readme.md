@@ -1,8 +1,20 @@
-# Timeline
+<p align="center"><img src="https://github.com/senhungwong/timeline-server/blob/master/assets/logo.png" width="25%"></p>
+
+<p align="center">
+<a href="https://travis-ci.org/travis-ci/travis-web"><img src="https://travis-ci.org/senhungwong/timeline-server.svg?branch=master" alt="Build Status"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+<a href="https://github.com/senhungwong/timeline-server/tags"><img src="https://img.shields.io/github/tag/senhungwong/timeline-server.svg" alt="GitHub tag"></a>
+</p>
 
 ## Description
 
 A backend server for recording events.
+
+## Demo
+
+[Timeline](http://timeline.senhung.net)
+
+**IMPORTANT: The back end is hosted on a free server. Please do not overwhalm the server by sending too many requests. Thank you!**
 
 ## API
 
