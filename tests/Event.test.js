@@ -31,9 +31,9 @@ describe('EventController tests', function() {
 
     describe('Test index events', function() {
         it('should return the user events', async function() {
-            const user = await UserFactory.create('test_username');
+            const user = await UserFactory.create('event_username');
 
-            const token = await getUserToken('test_username');
+            const token = await getUserToken('event_username');
 
             const event = await EventFactory.create(user._id);
             
